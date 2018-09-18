@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <h1 style="text-align: center">Vue Grid Layout</h1>
-        <!--<pre>{{ layout | json }}</pre>-->
+        
         <div>
             <div class="layoutJSON">
                 Displayed as <code>[x, y, w, h]</code>:
@@ -20,6 +20,8 @@
                 </div>
             </div>-->
         </div>
+   
+        
         <div id="content">
             <button @click="decreaseWidth">Decrease Width</button>
             <button @click="increaseWidth">Increase Width</button>
@@ -40,6 +42,7 @@
                     :is-resizable="resizable"
                     :is-mirrored="mirrored"
                     :vertical-compact="true"
+                    :margin="[0, 0]"
                     :use-css-transforms="true"
             >
                 <grid-item v-for="item in layout" :key="item.i"
@@ -48,13 +51,17 @@
                            :w="item.w"
                            :h="item.h"
                            :i="item.i"
+                           :zindex='item.zIndex'
                            @resize="resize"
                            @move="move"
                            @resized="resized"
                            @moved="moved"
                 >
+                    <div>
+                    {{item}}
+                    </div>
                     <!--<custom-drag-element :text="item.i"></custom-drag-element>-->
-                    <test-element :text="item.i"></test-element>
+                    <!--<test-element :text="item.i"></test-element>-->
                     <!--<button @click="clicked">CLICK ME!</button>-->
                 </grid-item>
             </grid-layout>
@@ -73,13 +80,17 @@
                            :y="item.y"
                            :w="item.w"
                            :h="item.h"
+                           :z-index="item.zIndex"
                            :min-w="2"
                            :min-h="2"
                            :i="item.i"
                            :is-draggable="item.draggable"
                            :is-resizable="item.resizable"
                 >
-                    <test-element :text="item.i"></test-element>
+                    <div>
+                       
+                    <input type='text' v-model='item'></input>
+                    </div>
                 </grid-item>
             </grid-layout>-->
         </div>
@@ -96,26 +107,32 @@
     //var eventBus = require('./eventBus');
 
     let testLayout = [
-        {"x":0,"y":0,"w":2,"h":2,"i":"0", resizable: true, draggable: true},
-        {"x":2,"y":0,"w":2,"h":4,"i":"1", resizable: null, draggable: null},
-        {"x":4,"y":0,"w":2,"h":5,"i":"2", resizable: false, draggable: false},
-        {"x":6,"y":0,"w":2,"h":3,"i":"3", resizable: false, draggable: false},
-        {"x":8,"y":0,"w":2,"h":3,"i":"4", resizable: false, draggable: false},
-        {"x":10,"y":0,"w":2,"h":3,"i":"5", resizable: false, draggable: false},
-        {"x":0,"y":5,"w":2,"h":5,"i":"6", resizable: false, draggable: false},
-        {"x":2,"y":5,"w":2,"h":5,"i":"7", resizable: false, draggable: false},
-        {"x":4,"y":5,"w":2,"h":5,"i":"8", resizable: false, draggable: false},
-        {"x":6,"y":4,"w":2,"h":4,"i":"9", resizable: false, draggable: false},
-        {"x":8,"y":4,"w":2,"h":4,"i":"10", resizable: false, draggable: false},
-        {"x":10,"y":4,"w":2,"h":4,"i":"11", resizable: false, draggable: false},
-        {"x":0,"y":10,"w":2,"h":5,"i":"12", resizable: false, draggable: false},
-        {"x":2,"y":10,"w":2,"h":5,"i":"13", resizable: false, draggable: false},
-        {"x":4,"y":8,"w":2,"h":4,"i":"14", resizable: false, draggable: false},
-        {"x":6,"y":8,"w":2,"h":4,"i":"15", resizable: false, draggable: false},
-        {"x":8,"y":10,"w":2,"h":5,"i":"16", resizable: false, draggable: false},
-        {"x":10,"y":4,"w":2,"h":2,"i":"17", resizable: false, draggable: false},
-        {"x":0,"y":9,"w":2,"h":3,"i":"18", resizable: false, draggable: false},
+        {"x":0,"y":0,"w":2,"h":2,"i":"0", resizable: true, draggable: true, static:true},
+        {"x":2,"y":0,"w":2,"h":4,"i":"1", resizable: null, draggable: null,static:true},
+        {"x":4,"y":0,"w":2,"h":5,"i":"2", resizable: false, draggable: false,static:true},
+        {"x":6,"y":0,"w":2,"h":3,"i":"3", resizable: false, draggable: false,static:true},
+        {"x":8,"y":0,"w":2,"h":3,"i":"4", resizable: false, draggable: false,static:true},
+        {"x":10,"y":0,"w":2,"h":3,"i":"5", resizable: false, draggable: false,static:true},
+        {"x":0,"y":5,"w":2,"h":5,"i":"6", resizable: false, draggable: false,static:true},
+        {"x":2,"y":5,"w":2,"h":5,"i":"7", resizable: false, draggable: false,static:true},
+        {"x":4,"y":5,"w":2,"h":5,"i":"8", resizable: false, draggable: false,static:true},
+        {"x":6,"y":4,"w":2,"h":4,"i":"9", resizable: false, draggable: false,static:true},
+        {"x":8,"y":4,"w":2,"h":4,"i":"10", resizable: false, draggable: false,static:true},
+        {"x":10,"y":4,"w":2,"h":4,"i":"11", resizable: false, draggable: false,static:true},
+        {"x":0,"y":10,"w":2,"h":5,"i":"12", resizable: false, draggable: false,static:true},
+        {"x":2,"y":10,"w":2,"h":5,"i":"13", resizable: false, draggable: false,static:true},
+        {"x":4,"y":8,"w":2,"h":4,"i":"14", resizable: false, draggable: false,static:true},
+        {"x":6,"y":8,"w":2,"h":4,"i":"15", resizable: false, draggable: false,static:true},
+        {"x":8,"y":10,"w":2,"h":5,"i":"16", resizable: false, draggable: false,static:true},
+        {"x":10,"y":4,"w":2,"h":2,"i":"17", resizable: false, draggable: false,static:true},
+        {"x":0,"y":9,"w":2,"h":3,"i":"18", resizable: false, draggable: false,static:true},
         {"x":2,"y":6,"w":2,"h":2,"i":"19", resizable: false, draggable: false}
+    ];
+
+    testLayout = [
+        {"x":0,"y":0,"w":2,"h":2,"i":"0", resizable: true, draggable: true, static:true,zIndex:1},
+        {"x":1,"y":0,"w":2,"h":4,"i":"1", resizable: null, draggable: null,static:true,zIndex:1},
+        {"x":2,"y":0,"w":1,"h":3,"i":"2", resizable: false, draggable: false,static:true,zIndex:1},        
     ];
 
     export default {
@@ -134,7 +151,7 @@
                 draggable: true,
                 resizable: true,
                 mirrored: false,
-                rowHeight: 30,
+                rowHeight: 10,
                 colNum: 12,
                 index: 0
             }
@@ -147,9 +164,11 @@
                 window.alert("CLICK!");
             },
             increaseWidth: function() {
+                console.log('increaseWidth');
                 let width = document.getElementById("content").offsetWidth;
-                width += 20;
+                //width += 20;
                 document.getElementById("content").style.width = width+"px";
+                this.colNum = Math.round(width/1);
             },
             decreaseWidth: function() {
                 let width = document.getElementById("content").offsetWidth;

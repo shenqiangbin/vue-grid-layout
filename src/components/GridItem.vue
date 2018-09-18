@@ -171,6 +171,10 @@
             i: {
                 required: true
             },
+            zindex:{
+                type: Number, 
+                default:1,           
+            },
             dragIgnoreFrom: {
                 type: String,
                 required: false,
@@ -362,6 +366,9 @@
                 this.innerW = newVal;
                 this.createStyle();
             },
+            zindex:function(newVal){               
+                this.createStyle();
+            },
             renderRtl: function () {
                 // console.log("### renderRtl");
                 this.tryMakeResizable();
@@ -424,6 +431,7 @@
                         style = setTopLeft(pos.top, pos.left, pos.width, pos.height);
                     }
                 }
+                style.zIndex = this.zindex;                
                 this.style = style;
 
             },
